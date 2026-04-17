@@ -7,7 +7,7 @@ const workItems = [
     title: 'Design and Evaluation of an AI System for Mental Health Coaching',
     teaser: 'Safety-first LLM backend for a mental health coaching system.',
     description:
-      'Backend for Naya, a mental health coaching chatbot. Multi-node LLM pipeline with RAG, ' +
+      'Backend for a mental health coaching chatbot. Multi-node LLM pipeline with RAG, ' +
       'fine-tuning, and evaluation. In collaboration with Bmind S.R.L.',
     tech: ['FastAPI', 'Python', 'pgvector', 'RAG', 'LoRA', 'OpenRouter'],
     github: null,
