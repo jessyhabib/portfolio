@@ -7,30 +7,40 @@ import { useInView } from '../hooks/useInView';
 
 const skillGroups = [
   {
-    title: 'Microsoft Office',
-    items: ['Word', 'Excel', 'PowerPoint', 'Access'],
+    title: 'AI & LLMs',
+    items: ['LLM Fine-tuning (LoRA, SFT, DPO)', 'Retrieval Augmented Generation (RAG)', 'Prompt Engineering', 'Multi-node Orchestration', 'Evaluation Frameworks'],
   },
   {
-    title: 'Software & Tools',
-    items: ['VS Code', 'SQLite', 'MongoDB', 'Quartus', 'MATLAB', 'Wireshark', 'Keil', 'Docker', 'Git'],
-  },
-  {
-    title: 'Programming Languages',
-    items: ['Python', 'Java', 'JavaScript', 'TypeScript', 'C', 'C++', 'HTML', 'CSS'],
-  },
-  {
-    title: 'Web Development',
-    items: ['React', 'Bootstrap'],
+    title: 'Backend',
+    items: ['FastAPI', 'SQLAlchemy (async)', 'Alembic', 'REST APIs', 'JWT Authentication', 'PostgreSQL', 'pgvector'],
   },
   {
     title: 'ML Frameworks',
-    items: ['TensorFlow', 'PyTorch', 'Scikit-Learn'],
+    items: ['PyTorch', 'TensorFlow', 'Scikit-Learn', 'Hugging Face'],
   },
   {
-    title: 'Languages',
-    items: ['English (fluent)', 'Arabic (fluent)'],
+    title: 'Programming Languages',
+    items: ['Python', 'Java', 'JavaScript', 'TypeScript', 'C', 'C++', 'SQL'],
+  },
+  {
+    title: 'Web Development',
+    items: ['React', 'Bootstrap', 'HTML', 'CSS'],
+  },
+  {
+    title: 'Cloud & Infrastructure',
+    items: ['Supabase', 'Render', 'Vercel', 'Modal', 'Together AI', 'Docker', 'Git'],
+  },
+  {
+    title: 'Databases & Tools',
+    items: ['PostgreSQL', 'SQLite', 'MongoDB', 'pgvector', 'Wireshark', 'MATLAB'],
+  },
+  {
+    title: 'Microsoft Office',
+    items: ['Word', 'Excel', 'PowerPoint', 'Access'],
   },
 ];
+
+const spokenLanguages = ['English (fluent)', 'Arabic (mother tongue)', 'Italian (basic)'];
 
 function Skills() {
   const [ref, inView] = useInView({ threshold: 0.15 });
@@ -56,6 +66,21 @@ function Skills() {
               </div>
             </article>
           ))}
+        </div>
+
+        <div className="skills-languages">
+          <div className="section-heading">
+            <h2>Languages</h2>
+          </div>
+          <div className="skills-group-card premium-card">
+            <div className="skills-chip-wrap">
+              {spokenLanguages.map((lang) => (
+                <span key={lang} className="skill-chip">
+                  {lang}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

@@ -887,6 +887,18 @@ a {
   box-shadow: 0 0 0 3px rgba(179, 157, 219, 0.3);
 }
 
+.skills-languages {
+  margin-top: 40px;
+}
+
+.skills-languages .skills-chip-wrap {
+  gap: 24px;
+}
+
+.skills-languages .skills-group-card {
+  display: inline-flex;
+}
+
 /* ════════════════════════════════════════════════════════════
    CURRENTLY LEARNING
 ════════════════════════════════════════════════════════════ */
