@@ -1,0 +1,1179 @@
+/*
+  Global Portfolio Styles
+  =======================
+  Design tokens
+    --bg          #f0ede8   warm grey page background
+    --text        #2d2d2d   charcoal body text
+    --text-body   #555      slightly lighter for paragraphs
+    --accent      #b39ddb   lavender — buttons, dots, chips
+    --accent-deep #9c7bb5   deeper purple — hover states, labels
+    --card-radius 20px      unified corner radius for all cards
+    --navbar-h    74px      sticky navbar height (used in scroll-padding)
+
+  Fonts (loaded in index.html via Google Fonts):
+    Inter      — body text at weights 400 / 500 / 600 / 700
+    Great Vibes — cursive logo monogram only
+*/
+
+/* ── Custom properties ─────────────────────────────────────────────────────── */
+:root {
+  --bg:               #f0ede8;
+  --text:             #2d2d2d;
+  --text-body:        #555;
+  --accent:           #b39ddb;
+  --accent-deep:      #9c7bb5;
+  --card-radius:      20px;
+  --card-shadow:      0 8px 32px rgba(179, 157, 219, 0.15);
+  --card-shadow-hover:0 14px 40px rgba(156, 123, 181, 0.28);
+  --navbar-h:         74px;
+}
+
+/* ── Reset / base ──────────────────────────────────────────────────────────── */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Offset anchor targets so they aren't hidden behind the sticky navbar */
+  scroll-padding-top: calc(var(--navbar-h) + 12px);
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Centred content wrapper used by every section */
+.container {
+  width: min(1120px, 92vw);
+  margin: 0 auto;
+}
+
+/* ════════════════════════════════════════════════════════════
+   NAVBAR
+════════════════════════════════════════════════════════════ */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: var(--navbar-h);
+  background: rgba(240, 237, 232, 0.95);
+  border-bottom: 1px solid rgba(156, 123, 181, 0.18);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.navbar-inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.logo-link {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.logo-svg {
+  width: 58px;
+  height: 58px;
+  transition: transform 220ms ease;
+}
+
+.logo-link:hover .logo-svg {
+  transform: scale(1.05);
+}
+
+.logo-circle-fill {
+  fill: #d1c4e9;
+}
+
+.logo-monogram {
+  font-family: 'Great Vibes', cursive;
+  font-size: 46px;
+  fill: #5f4a72;
+}
+
+/* Nav link list — list-style:none removes the default bullet points */
+.nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+}
+
+.nav-links a {
+  color: var(--text);
+  font-weight: 500;
+  font-size: 0.95rem;
+  position: relative;
+  white-space: nowrap;
+  transition: color 180ms ease;
+}
+
+/* Animated underline: grows from 0 to full width on hover */
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--accent-deep);
+  transition: width 180ms ease;
+}
+
+.nav-links a:hover {
+  color: var(--accent-deep);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+/* ════════════════════════════════════════════════════════════
+   SHARED SECTION + TYPOGRAPHY
+════════════════════════════════════════════════════════════ */
+.content-section {
+  padding: 84px 0;
+}
+
+.section-heading {
+  margin-bottom: 26px;
+}
+
+/* Small-caps label above the section h2 (e.g. "Education", "My Work") */
+.section-label {
+  margin: 0 0 10px;
+  font-size: 0.78rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--accent-deep);
+}
+
+/* Large section title */
+.section-heading h2 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  color: var(--text);
+}
+
+/* Card heading (university name, project name, etc.) */
+.card-title {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+/* Standard paragraph style used inside cards */
+.card-body-text {
+  color: var(--text-body);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ── Scroll-reveal animations ── */
+/* Elements start invisible/offset and transition to visible when inView is set */
+.section-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 560ms ease, transform 560ms ease;
+}
+
+.section-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.section-reveal-right {
+  opacity: 0;
+  transform: translateX(22px);
+  transition: opacity 620ms ease, transform 620ms ease;
+}
+
+.section-reveal-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Premium card system ── */
+/* All card types share this base: white bg, rounded corners, lavender shadow.
+   .flip-face is excluded — box-shadow on 3D-transformed elements with
+   backface-visibility:hidden breaks GPU compositing in Chrome and Safari. */
+.premium-card,
+.carousel-card,
+.education-card,
+.skills-group-card,
+.learning-card,
+.fact-card,
+.connect-card {
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  border: 1px solid rgba(156, 123, 181, 0.15);
+  background: #fff;
+}
+
+/* Hover lift for cards that aren't flip scenes */
+.carousel-card,
+.education-card,
+.skills-group-card,
+.learning-card,
+.fact-card,
+.connect-card {
+  transition: transform 250ms ease, box-shadow 250ms ease;
+}
+
+.carousel-card:hover,
+.education-card:hover,
+.skills-group-card:hover,
+.learning-card:hover,
+.fact-card:hover,
+.connect-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+/* ════════════════════════════════════════════════════════════
+   HERO
+════════════════════════════════════════════════════════════ */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e8e6e1; /* slightly deeper warm grey than the page background */
+  overflow: hidden;
+  padding: 30px 0;
+}
+
+/*
+  The neural-network canvas is absolutely positioned to fill the entire hero.
+  pointer-events:none ensures the animation never blocks clicks on the text.
+*/
+.neural-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Two-column grid: text left, right column stays empty (canvas shows through) */
+.hero-layout {
+  position: relative;
+  z-index: 1; /* sits above the canvas layer */
+  display: grid;
+  grid-template-columns: 1fr 0.9fr;
+  align-items: center;
+  gap: 34px;
+}
+
+.hero-content {
+  max-width: 760px;
+}
+
+/* Small tagline above the name */
+.hero-kicker {
+  margin: 0 0 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--accent-deep);
+}
+
+/* Name: large, bold, static — no hover scatter */
+.hero-name {
+  margin: 0 0 4px;
+  font-size: clamp(2.6rem, 7vw, 5rem);
+  line-height: 1.05;
+  font-weight: 800;
+  color: var(--text);
+}
+
+/* Opening line container: inline-flex so letters wrap naturally */
+.hero-opening {
+  margin: 16px 0;
+  font-size: clamp(0.95rem, 2.1vw, 1.2rem);
+  max-width: 65ch;
+  color: #5f4a72;
+  display: inline-flex;
+  flex-wrap: wrap;
+  line-height: 1.7;
+}
+
+/*
+  Each letter in the opening line is a separate <span> animated by waveRipple.
+  Individual animation-delay values (applied inline) create the stagger effect.
+*/
+.hero-wave-letter {
+  display: inline-block;
+  animation: waveRipple 2.2s ease-in-out infinite;
+  will-change: transform;
+  font-weight: 600;
+}
+
+/* Bio paragraph — acts as a click target for the word-explode animation */
+.hero-bio {
+  margin: 0;
+  max-width: 72ch;
+  color: var(--text-body);
+  line-height: 1.7;
+  cursor: pointer;
+  outline: none;
+}
+
+/*
+  Each word in the bio is an inline-block so can be individually transformed.
+  The transition here is the "reform" travel back to origin after 800 ms.
+*/
+.hero-bio-word {
+  display: inline-block;
+  margin-right: 0.35em;
+  transition: transform 520ms ease;
+  will-change: transform;
+}
+
+/* Hint text "(click me)" below the bio */
+.hero-bio-hint {
+  margin: 6px 0 0;
+  color: var(--accent-deep);
+  opacity: 0.85;
+  font-size: 0.82rem;
+}
+
+/* CTA button row */
+.hero-actions {
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Right column: no foreground content — the neural canvas shines through */
+.hero-visual {
+  min-height: 340px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   BUTTONS
+════════════════════════════════════════════════════════════ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 12px 22px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 200ms ease, box-shadow 200ms ease,
+              background-color 200ms ease, color 200ms ease;
+}
+
+.btn:hover {
+  transform: translateY(-4px);
+}
+
+/* Filled lavender primary button */
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(156, 123, 181, 0.33);
+}
+
+/* Ghost secondary button — fills on hover */
+.btn-secondary {
+  background: #f1e9fb;
+  color: #5b4672;
+  border-color: rgba(156, 123, 181, 0.4);
+}
+
+.btn-secondary:hover {
+  background: var(--accent-deep);
+  color: #fff;
+  box-shadow: 0 12px 30px rgba(156, 123, 181, 0.36);
+}
+
+/* ════════════════════════════════════════════════════════════
+   CAROUSEL (shared between Projects and Experience tabs)
+════════════════════════════════════════════════════════════ */
+.carousel-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.arrow-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(156, 123, 181, 0.35);
+  background: #fff;
+  color: var(--accent-deep);
+  font-size: 1.4rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+.arrow-btn:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Horizontal scroll-snap track */
+.carousel-track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(290px, 43%);
+  gap: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 8px;
+  cursor: grab;
+}
+
+.carousel-track.is-dragging {
+  cursor: grabbing;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Thin lavender scrollbar */
+.carousel-track::-webkit-scrollbar {
+  height: 8px;
+}
+
+.carousel-track::-webkit-scrollbar-thumb {
+  background: rgba(156, 123, 181, 0.35);
+  border-radius: 999px;
+}
+
+/* Both flip scenes and plain cards snap to the start of the track */
+.carousel-card,
+.flip-scene {
+  scroll-snap-align: start;
+}
+
+/* ════════════════════════════════════════════════════════════
+   MYWORK TABS
+════════════════════════════════════════════════════════════ */
+/* Row of tab buttons above the carousel */
+.mywork-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.tab-btn {
+  padding: 8px 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(156, 123, 181, 0.4);
+  background: transparent;
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+
+.tab-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent-deep);
+}
+
+/* Active tab is filled with lavender */
+.tab-btn--active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* ════════════════════════════════════════════════════════════
+   EXPERIENCE CARDS (inside MyWork)
+════════════════════════════════════════════════════════════ */
+.experience-card-inner {
+  /* inherits .carousel-card styles; padding is applied to the inner body */
+  padding: 0;
+}
+
+.experience-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.experience-meta {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Purple pill — university name */
+.university-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: #f0e8fa;
+  color: #5f4a72;
+  padding: 5px 11px;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+/* Date pill — soft lavender chip, plain text only (no emoji) */
+.date-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 20px;
+  background: #ede9f6;
+  color: #9c7bb5;
+  padding: 4px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.experience-points {
+  margin: 12px 0 10px;
+  padding-left: 18px;
+  color: var(--text-body);
+  line-height: 1.7;
+}
+
+.experience-points li {
+  margin-bottom: 7px;
+}
+
+/* Tech chips row inside experience cards */
+.experience-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   EDUCATION TIMELINE
+════════════════════════════════════════════════════════════ */
+.education-timeline {
+  display: grid;
+  gap: 24px;
+}
+
+/* Each row: 46 px rail column + 1fr card column */
+.education-row {
+  display: grid;
+  grid-template-columns: 46px 1fr;
+  align-items: stretch;
+  gap: 16px;
+}
+
+/* Rail: contains the vertical line and the dot */
+.timeline-rail {
+  position: relative;
+}
+
+/* Lavender vertical line connecting entries */
+.timeline-rail::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: -24px; /* extends into the gap below this row */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+/* Don't extend the line below the very last entry */
+.education-row:last-child .timeline-rail::before {
+  bottom: 0;
+}
+
+/* Deep-purple dot sitting on the line */
+.timeline-dot {
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent-deep);
+  border: 3px solid var(--bg); /* matches page bg so it looks "punched out" */
+  box-shadow: 0 0 0 2px rgba(156, 123, 181, 0.25);
+}
+
+/*
+  Education card: clean white with a colored 4 px left border.
+  The borderLeft inline style in Education.jsx overrides the 1px default.
+  !important is needed because the selector specificity is equal to .premium-card.
+*/
+.education-card {
+  overflow: hidden;
+  border-left-width: 4px !important;
+  border-left-style: solid !important;
+}
+
+/* University name + status badge on the same line */
+.education-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.education-content {
+  padding: 18px 20px;
+}
+
+.education-degree {
+  margin: 4px 0 10px;
+  color: #4a3b58;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.education-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+/* Location chip — soft lavender pill, plain text only (no emoji) */
+.location-chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #9c7bb5;
+  background: #ede9f6;
+}
+
+/* Status badges: two colour variants driven by a CSS modifier class */
+.status-badge {
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* "Graduated ✓" — green */
+.status-badge--graduated {
+  background: #e6f4ea;
+  color: #2d7a4b;
+}
+
+/* "In Progress" — lavender */
+.status-badge--in-progress {
+  background: #f0e8fa;
+  color: #7c5b99;
+}
+
+/* ════════════════════════════════════════════════════════════
+   PROJECTS — 3D FLIP CARDS
+════════════════════════════════════════════════════════════ */
+/* Outer container sets the 3D perspective */
+/* box-shadow on the outer container, not faces, avoids compositing issues */
+.flip-scene {
+  perspective: 1200px;
+  height: 340px;
+  cursor: pointer;
+  outline: none;
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  transition: box-shadow 250ms ease;
+}
+
+.flip-scene:hover {
+  box-shadow: var(--card-shadow-hover);
+}
+
+/* -webkit-transform-style needed for Safari; will-change promotes to GPU layer */
+.flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  transition: transform 680ms ease;
+  will-change: transform;
+}
+
+.flip-inner.is-flipped {
+  transform: rotateY(180deg);
+}
+
+/* overflow:hidden is NOT set here — it creates a formatting context that
+   flattens preserve-3d in Chromium. Applied per-face below instead. */
+.flip-face {
+  position: absolute;
+  inset: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: var(--card-radius);
+}
+
+/* ── Front face ───────────────────────────────────────────── */
+.flip-front {
+  overflow: hidden;
+  background: linear-gradient(135deg, #c8b8e8 0%, #e0d5f5 100%);
+  display: flex;
+  align-items: flex-end; /* push content to the bottom */
+}
+
+/* Dark gradient overlay at the bottom for text legibility */
+.project-front-content {
+  width: 100%;
+  padding: 20px;
+  background: linear-gradient(to top, rgba(50, 30, 80, 0.55), transparent);
+  border-radius: 0 0 var(--card-radius) var(--card-radius);
+}
+
+.project-front-title {
+  margin: 0 0 6px;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 800;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.project-front-teaser {
+  margin: 0 0 10px;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.flip-hint {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-style: italic;
+}
+
+/* ── Back face ────────────────────────────────────────────── */
+/*
+  Starts pre-rotated 180 deg so it is face-down until the flip.
+  White background for contrast with the lavender front.
+*/
+.flip-back {
+  transform: rotateY(180deg);
+  background: #fff;
+  overflow: hidden;
+  border: 1px solid rgba(156, 123, 181, 0.15);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.project-back-inner {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.project-back-text {
+  flex: 1; /* pushes tech tags and link to the bottom */
+}
+
+/* Tech-stack chips used on both flip-back and experience cards */
+.tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tech-tag {
+  border-radius: 999px;
+  background: #f1e9fb;
+  color: #5f4a72;
+  padding: 5px 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.project-link {
+  font-weight: 700;
+  color: var(--accent-deep);
+  transition: color 160ms ease;
+}
+
+.project-link:hover {
+  color: var(--accent);
+}
+
+.project-no-link {
+  font-size: 0.85rem;
+  color: #aaa;
+  font-style: italic;
+}
+
+/* ════════════════════════════════════════════════════════════
+   SKILLS
+════════════════════════════════════════════════════════════ */
+/* Auto-fit grid: max 3 columns on wide screens, fewer on small */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.skills-group-card {
+  padding: 18px;
+}
+
+.skills-group-card h3 {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.skills-chip-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Pastel lavender chip with subtle hover glow ring */
+.skill-chip {
+  border-radius: 999px;
+  background: #efe7fa;
+  color: #4e3f5c;
+  padding: 6px 11px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.skill-chip:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 0 3px rgba(179, 157, 219, 0.3);
+}
+
+/* ════════════════════════════════════════════════════════════
+   CURRENTLY LEARNING
+════════════════════════════════════════════════════════════ */
+.learning-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+/* Cards gently pulse to draw attention */
+.learning-card {
+  padding: 20px;
+  text-align: center;
+  animation: learningPulse 2.6s ease-in-out infinite;
+}
+
+.learning-card-title {
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.learning-card p {
+  margin: 0;
+  color: var(--text-body);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+/* Highlighted note below the cards with a left accent bar */
+.learning-note {
+  margin: 22px 0 0;
+  padding: 14px 18px;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 10px 10px 0;
+  background: rgba(179, 157, 219, 0.07);
+  color: var(--text-body);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+/* ════════════════════════════════════════════════════════════
+   FUN FACTS
+════════════════════════════════════════════════════════════ */
+.facts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.fact-card {
+  padding: 20px;
+  text-align: center;
+}
+
+.fact-icon {
+  display: block;
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+}
+
+.fact-card h3 {
+  margin: 0 0 6px;
+  font-size: 1.1rem;
+  color: var(--text);
+}
+
+.fact-card p {
+  margin: 0;
+  color: var(--text-body);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* ════════════════════════════════════════════════════════════
+   CONNECT (contact section)
+════════════════════════════════════════════════════════════ */
+/* Centred card that replaces the old contact form */
+.connect-card {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 40px 32px;
+  text-align: center;
+}
+
+.connect-title {
+  margin: 0 0 10px;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 800;
+  color: var(--text);
+}
+
+.connect-sub {
+  margin: 0 auto 22px;
+  max-width: 42ch;
+  color: var(--text-body);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Primary pill CTA */
+.connect-mail-btn {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 12px 26px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  box-shadow: 0 8px 22px rgba(156, 123, 181, 0.3);
+  transition: background-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+}
+
+.connect-mail-btn:hover {
+  background: var(--accent-deep);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(156, 123, 181, 0.4);
+}
+
+/* Icon link row below the email button */
+.connect-links {
+  margin-top: 18px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.connect-links a {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--accent-deep);
+  border: 1px solid rgba(156, 123, 181, 0.3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 180ms ease, background-color 180ms ease, color 180ms ease;
+}
+
+.connect-links a:hover {
+  transform: translateY(-2px);
+  background: var(--accent-deep);
+  color: #fff;
+}
+
+.connect-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   FOOTER
+════════════════════════════════════════════════════════════ */
+.site-footer {
+  border-top: 1px solid rgba(156, 123, 181, 0.2);
+  padding: 18px 0 28px;
+  background: var(--accent-deep);
+}
+
+.footer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.footer-row p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+}
+
+.footer-links {
+  display: flex;
+  gap: 10px;
+}
+
+.footer-links a {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  transition: transform 180ms ease, background-color 180ms ease, color 180ms ease;
+}
+
+.footer-links a:hover {
+  transform: translateY(-2px);
+  background: #fff;
+  color: var(--accent-deep);
+}
+
+.social-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   KEYFRAME ANIMATIONS
+════════════════════════════════════════════════════════════ */
+
+/*
+  Opening-line wave: each letter bobs up then back to baseline.
+  The effect looks like a ripple because animation-delay is staggered inline.
+*/
+@keyframes waveRipple {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-7px); }
+}
+
+/*
+  Learning cards gently scale up and back to imply they are "alive".
+  The 200 ms animation-delay stagger is applied inline to avoid synchronised pulsing.
+*/
+@keyframes learningPulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.02); }
+}
+
+/* ════════════════════════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════════════════════════ */
+
+/* Medium screens: make carousel cards wider so they don't look tiny */
+@media (max-width: 940px) {
+  .carousel-track {
+    grid-auto-columns: 80%;
+  }
+}
+
+/* Small screens (mobile) */
+@media (max-width: 720px) {
+  .navbar {
+    height: 66px;
+  }
+
+  .logo-svg {
+    width: 50px;
+    height: 50px;
+  }
+
+  .nav-links {
+    gap: 10px;
+    font-size: 0.88rem;
+  }
+
+  .content-section {
+    padding: 68px 0;
+  }
+
+  .hero {
+    min-height: 100vh;
+    padding: 20px 0;
+  }
+
+  /* Stack hero columns: text first, canvas-only right column hidden */
+  .hero-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-visual {
+    display: none;
+  }
+
+  .carousel-track {
+    grid-auto-columns: 90%;
+  }
+
+  /* Narrower rail on mobile */
+  .education-row {
+    grid-template-columns: 34px 1fr;
+    gap: 10px;
+  }
+
+  .timeline-dot {
+    width: 14px;
+    height: 14px;
+  }
+
+  .connect-card {
+    padding: 28px 20px;
+  }
+}
