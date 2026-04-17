@@ -2,7 +2,7 @@
  * App.jsx
  *
  * Root application layout.
- * Sections in order: Hero → Education → MyWork → Skills → Learning → Fun Facts → Connect
+ * Sections in order: Hero → Education → MyWork → Skills → CurrentlyLearning → FunFacts → Connect
  * The section IDs match the navbar anchor hrefs for smooth-scroll navigation.
  */
 import Navbar from './components/Navbar';

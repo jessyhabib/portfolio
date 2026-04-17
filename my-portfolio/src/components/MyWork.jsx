@@ -1,40 +1,19 @@
-/**
- * MyWork.jsx
- *
- * Project cards that flip on click to reveal details.
- *
- * FLIP MECHANISM:
- *   - Outer wrapper has perspective: 1000px so the browser renders 3D depth.
- *   - Inner "card-inner" div holds both faces and rotates via rotateY(180deg).
- *   - transform-style: preserve-3d lets child faces live in the same 3D space.
- *   - Both faces have backface-visibility: hidden so the reverse side is
- *     invisible when facing away from the viewer.
- *   - The back face starts pre-rotated 180deg so it is hidden at rest.
- *   - All critical flip styles are inline to avoid any CSS specificity fight.
- *
- * DRAG-VS-CLICK:
- *   setPointerCapture is deferred until the pointer has moved > DRAG_THRESHOLD
- *   pixels. This guarantees that a plain click always reaches the card's
- *   onClick handler without being swallowed by the carousel drag logic.
- *
- * CAROUSEL:
- *   CSS scroll-snap + pointer-event drag. Arrow buttons call scrollBy().
- */
 import { useRef, useState } from 'react';
 import { useInView } from '../hooks/useInView';
 
-// ── Data ─────────────────────────────────────────────────────────────────────
 const workItems = [
   {
-      id: 'masters-thesis',
-      title:'Design and Evaluation of an AI System for Mental Health Coaching',
-      teaser: 'Safety-first LLM backend for a mental health coaching system.',
-      description: 'Backend for Naya, a mental health coaching chatbot. Multi-node LLM pipeline with RAG, fine-tuning, and evaluation. In collaboration with Bmind S.R.L.',
-      tech: ['FastAPI', 'Python', 'pgvector', 'RAG', 'LoRA', 'OpenRouter'],
-      github: null,
-      university: 'Politecnico di Torino · Bmind S.R.L.',
-      dateRange: 'October 2025 – Present',
-    },
+    id: 'masters-thesis',
+    title: 'Design and Evaluation of an AI System for Mental Health Coaching',
+    teaser: 'Safety-first LLM backend for a mental health coaching system.',
+    description:
+      'Backend for Naya, a mental health coaching chatbot. Multi-node LLM pipeline with RAG, ' +
+      'fine-tuning, and evaluation. In collaboration with Bmind S.R.L.',
+    tech: ['FastAPI', 'Python', 'pgvector', 'RAG', 'LoRA', 'OpenRouter'],
+    github: null,
+    university: 'Politecnico di Torino · Bmind S.R.L.',
+    dateRange: 'October 2025 – Present',
+  },
   {
     id: 'soccer-tracker',
     title: 'Soccer Ball Tracker',
@@ -85,12 +64,9 @@ const workItems = [
   },
 ];
 
-// ── Shared face base styles ───────────────────────────────────────────────────
-// Applied to both front and back via spread so neither face is ever visible
-// from the wrong side (backface-visibility: hidden).
 const faceBase = {
   backfaceVisibility: 'hidden',
-  WebkitBackfaceVisibility: 'hidden', // Safari requires the prefixed version
+  WebkitBackfaceVisibility: 'hidden',
   position: 'absolute',
   top: 0,
   left: 0,
@@ -100,39 +76,21 @@ const faceBase = {
   overflow: 'hidden',
 };
 
-// ── Project flip card ─────────────────────────────────────────────────────────
 function ProjectCard({ item }) {
-  // One boolean per card — toggled on every click.
   const [isFlipped, setIsFlipped] = useState(false);
-
   const toggle = () => setIsFlipped((f) => !f);
 
   return (
-    /*
-     * OUTER WRAPPER — sets up the 3D viewing frustum.
-     * perspective: 1000px means objects 1000px "away" appear natural-sized.
-     * Width comes from the carousel's grid-auto-columns; height is fixed.
-     */
     <div
       className="flip-scene"
-      style={{ perspective: '1000px' }}
       onClick={toggle}
       onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          toggle();
-        }
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
       }}
       role="button"
       tabIndex={0}
       aria-label={`${item.title} — click to flip`}
     >
-      {/*
-       * INNER WRAPPER — the element that actually rotates.
-       * transform-style: preserve-3d keeps both child faces in 3D space
-       * rather than being flattened to 2D.
-       * transform is driven directly from state so no CSS class race condition.
-       */}
       <div
         style={{
           transformStyle: 'preserve-3d',
@@ -141,21 +99,18 @@ function ProjectCard({ item }) {
           position: 'relative',
           width: '100%',
           height: '100%',
-          // Inline transform = no specificity fight with external CSS
           transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
         }}
       >
-        {/* ── FRONT FACE ─────────────────────────────────────────────────── */}
-        {/* Purple gradient. Visible by default (no pre-rotation). */}
+        {/* ── FRONT FACE ── */}
         <div
           style={{
             ...faceBase,
             background: 'linear-gradient(135deg, #9b7fd4 0%, #c8b8e8 55%, #e0d5f5 100%)',
             display: 'flex',
-            alignItems: 'flex-end', // push text block to the bottom
+            alignItems: 'flex-end',
           }}
         >
-          {/* Dark scrim at bottom for text legibility */}
           <div
             style={{
               width: '100%',
@@ -164,7 +119,6 @@ function ProjectCard({ item }) {
               borderRadius: '0 0 var(--card-radius) var(--card-radius)',
             }}
           >
-            {/* Bold, large, white project name */}
             <h3
               style={{
                 margin: '0 0 6px',
@@ -176,8 +130,6 @@ function ProjectCard({ item }) {
             >
               {item.title}
             </h3>
-
-            {/* One-line teaser */}
             <p
               style={{
                 margin: '0 0 10px',
@@ -188,30 +140,17 @@ function ProjectCard({ item }) {
             >
               {item.teaser}
             </p>
-
-            {/* Hint shown at the bottom of the front face */}
-            <span
-              style={{
-                fontSize: '0.78rem',
-                color: 'rgba(255,255,255,0.7)',
-                fontStyle: 'italic',
-              }}
-            >
+            <span style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.7)', fontStyle: 'italic' }}>
               click to flip →
             </span>
           </div>
         </div>
 
-        {/* ── BACK FACE ──────────────────────────────────────────────────── */}
-        {/*
-         * Pre-rotated 180deg so it starts "face down" (hidden).
-         * When the inner wrapper rotates 180deg on flip, this face comes
-         * into view already right-way-round.
-         */}
+        {/* ── BACK FACE ── */}
         <div
           style={{
             ...faceBase,
-            transform: 'rotateY(180deg)', // starts hidden; revealed on flip
+            transform: 'rotateY(180deg)',
             background: '#fff',
             padding: '20px',
             display: 'flex',
@@ -221,52 +160,31 @@ function ProjectCard({ item }) {
             overflow: 'hidden auto',
           }}
         >
-          {/* Project name — dark text on white background */}
           <h3 className="card-title" style={{ margin: 0, color: '#2d1f3d' }}>
             {item.title}
           </h3>
-
-          {/* Full description — flex:1 pushes chips and link to the bottom */}
-          <p
-            style={{
-              margin: 0,
-              color: '#4a3b58',
-              fontSize: '0.9rem',
-              lineHeight: 1.6,
-              flex: 1,
-            }}
-          >
+          <p style={{ margin: 0, color: '#4a3b58', fontSize: '0.9rem', lineHeight: 1.6, flex: 1 }}>
             {item.description}
           </p>
-
-          {/* Tech-stack chips */}
           <div className="tech-tags">
             {item.tech.map((t) => (
-              <span key={t} className="tech-tag">
-                {t}
-              </span>
+              <span key={t} className="tech-tag">{t}</span>
             ))}
           </div>
-        
         </div>
       </div>
     </div>
   );
 }
 
-// ── Carousel ──────────────────────────────────────────────────────────────────
-// Drag-to-scroll with pointer events + arrow buttons.
-// IMPORTANT: setPointerCapture is only called after the pointer has moved past
-// DRAG_THRESHOLD pixels. This ensures a short tap/click reaches the card's
-// onClick handler instead of being absorbed by the drag logic.
-const DRAG_THRESHOLD = 6; // px
+const DRAG_THRESHOLD = 6;
 
 function Carousel({ children }) {
-  const trackRef      = useRef(null);
-  const isDown        = useRef(false); // pointer is pressed
-  const isDragging    = useRef(false); // pointer has moved past threshold
-  const startX        = useRef(0);
-  const scrollStart   = useRef(0);
+  const trackRef    = useRef(null);
+  const isDown      = useRef(false);
+  const isDragging  = useRef(false);
+  const startX      = useRef(0);
+  const scrollStart = useRef(0);
 
   const scroll = (dir) => {
     const track = trackRef.current;
@@ -285,17 +203,12 @@ function Carousel({ children }) {
   const onPointerMove = (e) => {
     if (!isDown.current) return;
     const dx = e.clientX - startX.current;
-
-    // Only start dragging (and capture the pointer) once the user has
-    // actually moved enough to distinguish a drag from a tap.
     if (!isDragging.current && Math.abs(dx) > DRAG_THRESHOLD) {
       isDragging.current = true;
       trackRef.current.classList.add('is-dragging');
       trackRef.current.setPointerCapture(e.pointerId);
     }
-
     if (isDragging.current) {
-      // Invert dx: dragging left scrolls right (natural gesture)
       trackRef.current.scrollLeft = scrollStart.current - dx;
     }
   };
@@ -309,12 +222,8 @@ function Carousel({ children }) {
   return (
     <div className="carousel-wrap">
       <div className="carousel-controls">
-        <button className="arrow-btn" onClick={() => scroll(-1)} aria-label="Scroll left">
-          &#8249;
-        </button>
-        <button className="arrow-btn" onClick={() => scroll(1)} aria-label="Scroll right">
-          &#8250;
-        </button>
+        <button className="arrow-btn" onClick={() => scroll(-1)} aria-label="Scroll left">&#8249;</button>
+        <button className="arrow-btn" onClick={() => scroll(1)} aria-label="Scroll right">&#8250;</button>
       </div>
       <div
         ref={trackRef}
@@ -330,7 +239,6 @@ function Carousel({ children }) {
   );
 }
 
-// ── Section ───────────────────────────────────────────────────────────────────
 function MyWork() {
   const [ref, inView] = useInView({ threshold: 0.1 });
 
@@ -341,8 +249,6 @@ function MyWork() {
           <p className="section-label">My Work</p>
           <h2>Projects &amp; Experience</h2>
         </div>
-
-        {/* Click any card to flip and reveal tech details on the back */}
         <Carousel>
           {workItems.map((item) => (
             <ProjectCard key={item.id} item={item} />

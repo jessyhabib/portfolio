@@ -11,6 +11,7 @@ const links = [
   { label: 'Education', href: '#education' },
   { label: 'My Work',   href: '#my-work' },
   { label: 'Skills',    href: '#skills' },
+  { label: 'Languages',  href: '#languages' },
   { label: 'Learning',  href: '#learning' },
   { label: 'Fun Facts', href: '#fun-facts' },
   { label: 'Contact',   href: '#contact' },

@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /*
   Global Portfolio Styles
   =======================
@@ -748,71 +752,7 @@ a {
   border-radius: var(--card-radius);
 }
 
-/* ── Front face ───────────────────────────────────────────── */
-.flip-front {
-  overflow: hidden;
-  background: linear-gradient(135deg, #c8b8e8 0%, #e0d5f5 100%);
-  display: flex;
-  align-items: flex-end; /* push content to the bottom */
-}
-
-/* Dark gradient overlay at the bottom for text legibility */
-.project-front-content {
-  width: 100%;
-  padding: 20px;
-  background: linear-gradient(to top, rgba(50, 30, 80, 0.55), transparent);
-  border-radius: 0 0 var(--card-radius) var(--card-radius);
-}
-
-.project-front-title {
-  margin: 0 0 6px;
-  color: #fff;
-  font-size: 1.2rem;
-  font-weight: 800;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-}
-
-.project-front-teaser {
-  margin: 0 0 10px;
-  color: rgba(255, 255, 255, 0.88);
-  font-size: 0.9rem;
-  line-height: 1.5;
-}
-
-.flip-hint {
-  font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.7);
-  font-style: italic;
-}
-
-/* ── Back face ────────────────────────────────────────────── */
-/*
-  Starts pre-rotated 180 deg so it is face-down until the flip.
-  White background for contrast with the lavender front.
-*/
-.flip-back {
-  transform: rotateY(180deg);
-  background: #fff;
-  overflow: hidden;
-  border: 1px solid rgba(156, 123, 181, 0.15);
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.project-back-inner {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.project-back-text {
-  flex: 1; /* pushes tech tags and link to the bottom */
-}
-
-/* Tech-stack chips used on both flip-back and experience cards */
+/* Tech-stack chips */
 .tech-tags {
   display: flex;
   flex-wrap: wrap;
@@ -826,22 +766,6 @@ a {
   padding: 5px 10px;
   font-size: 0.82rem;
   font-weight: 600;
-}
-
-.project-link {
-  font-weight: 700;
-  color: var(--accent-deep);
-  transition: color 160ms ease;
-}
-
-.project-link:hover {
-  color: var(--accent);
-}
-
-.project-no-link {
-  font-size: 0.85rem;
-  color: #aaa;
-  font-style: italic;
 }
 
 /* ════════════════════════════════════════════════════════════

@@ -68,7 +68,7 @@ function Skills() {
           ))}
         </div>
 
-        <div className="skills-languages">
+        <div id="languages" className="skills-languages">
           <div className="section-heading">
             <h2>Languages</h2>
           </div>
