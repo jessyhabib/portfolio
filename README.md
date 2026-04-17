@@ -2,7 +2,7 @@
 
 Personal portfolio website — an online version of my CV showcasing my background in Computer Engineering, with a focus on AI & backend development.
 
-🔗 **Live site:** [your-vercel-url.vercel.app](https://your-vercel-url.vercel.app)
+🔗 **Live site:** [your-vercel-url.vercel.app](https://portfolio-tau-five-24.vercel.app)
 
 ## Tech Stack
 
