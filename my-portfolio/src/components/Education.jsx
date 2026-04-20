@@ -36,9 +36,8 @@ const educationEntries = [
     status: 'graduated',
     statusLabel: 'Graduated \u2713', // ✓ is a standard ASCII-adjacent character, not an emoji
     borderColor: '#fda085',
-    description:
-      "Completed my bachelor\u2019s degree in Computer Engineering with a focus on software and hardware fundamentals. " +
-      "Thesis: developed a machine learning approach for soccer ball tracking using image processing and object detection.",
+    description: "Completed my bachelor\u2019s degree in Computer Engineering with a focus on software and hardware fundamentals.",
+    thesis: "Bachelor\u2019s Thesis: Ball Tracking in Soccer Videos using Machine Learning",
   },
   {
     id: 'master',
@@ -46,13 +45,13 @@ const educationEntries = [
     location: 'Torino, Italy',
     degree: 'Master in Computer Engineering \u2014 AI & Data Analysis',
     dateRange: '2023 – 2026',
-    // Fixed: was 'in-progress' which showed lavender; should be 'graduated' (green)
     status: 'graduated',
     statusLabel: 'Graduated \u2713',
     borderColor: '#b39ddb',
     description:
-      "Completed my Master\u2019s degree specialising in Artificial Intelligence and Data Engineering. " +
-      "Completed courses in Web Applications, Advanced Machine Learning, and Software Engineering \u2014 each with a hands-on project.",
+      "Completed my Master\u2019s degree specialising in Artificial Intelligence and Data Analytics, " +
+      "with courses in Web Applications, Advanced Machine Learning, and Software Engineering \u2014 each with a hands-on project.",
+    thesis: "Master\u2019s Thesis: Design and Evaluation of an AI System for Mental Health Coaching.",
   },
 ];
 
@@ -96,6 +95,9 @@ function EducationCard({ entry }) {
         </div>
 
         <p className="card-body-text">{entry.description}</p>
+        {entry.thesis && (
+          <p className="education-thesis">{entry.thesis}</p>
+        )}
       </div>
     </article>
   );

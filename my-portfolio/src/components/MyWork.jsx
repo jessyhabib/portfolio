@@ -13,6 +13,7 @@ const workItems = [
     github: null,
     university: 'Politecnico di Torino · Bmind S.R.L.',
     dateRange: 'October 2025 – Present',
+    badge: 'Master Thesis',
   },
   {
     id: 'soccer-tracker',
@@ -25,6 +26,7 @@ const workItems = [
     github: null,
     university: 'University of Balamand',
     dateRange: 'Bachelor Thesis',
+    badge: 'Bachelor Thesis',
   },
   {
     id: 'meme-game',
@@ -160,6 +162,21 @@ function ProjectCard({ item }) {
             overflow: 'hidden auto',
           }}
         >
+          {item.badge && (
+            <span style={{
+              display: 'inline-block',
+              background: '#f3eeff',
+              color: '#5f4a72',
+              fontSize: '0.72rem',
+              fontWeight: 700,
+              padding: '3px 10px',
+              borderRadius: '999px',
+              borderLeft: '3px solid #b39ddb',
+              marginBottom: '6px',
+            }}>
+              {item.badge}
+            </span>
+          )}
           <h3 className="card-title" style={{ margin: 0, color: '#2d1f3d' }}>
             {item.title}
           </h3>
